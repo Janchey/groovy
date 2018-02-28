@@ -1,0 +1,11 @@
+.head{
+    margin: 0;
+    max-width: 1903px;
+    max-height: 653px;
+    min-height: 250px;
+}
+.bckg-image{
+    background-image: url(../../../assets/images/home-head.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
