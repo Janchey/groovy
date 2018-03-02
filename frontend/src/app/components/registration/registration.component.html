@@ -1,0 +1,73 @@
+<div class="container margin-100">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="page-header">Registration Page</h1>
+    </div>
+    <div class="col-12">
+      <!-- Material form register -->
+      <form [formGroup]="registerForm" (submit)="onRegisterFormSubmit()">
+        <p class="h4 text-center mb-4">Sign up</p>
+
+        <!-- Material input text -->
+        <!-- Check if username field has been tuched and then check if empty -->
+        <div class="md-form" [ngClass]="{'has-error': (registerForm.controls.username.errors && registerForm.controls.username.dirty), 'has-success': !registerForm.controls.username.errors}">
+          <i class="fa fa-user prefix grey-text"></i>
+          <input type="text" name="username" id="materialFormRegisterNameEx" class="form-control" autocomplete="off" placeholder="Username*"
+            formControlName="username">
+          <ul class="help-block">
+            <!-- Trow an error if username is defined, if not don't show error -->
+            <li *ngIf="registerForm.controls.username.errors?.required && registerForm.controls.username.dirty">This field is required</li>
+            <li *ngIf="registerForm.controls.username.errors?.minlength && registerForm.controls.username.dirty || registerForm.controls.username.errors?.maxlength && registerForm.controls.username.dirty ">Username must be at least 2 characters long but not longer than 22</li>
+            <li *ngIf="registerForm.controls.username.errors?.validateUsername && registerForm.controls.username.dirty">Username must not have any special characters</li>
+          </ul>
+        </div>
+
+        <!-- Material input email -->
+        <div class="md-form" [ngClass]="{'has-error': (registerForm.controls.email.errors && registerForm.controls.email.dirty), 'has-success': !registerForm.controls.email.errors}">
+          <i class="fa fa-envelope prefix grey-text"></i>
+          <input type="email" name="email" id="materialFormRegisterEmailEx" class="form-control" placeholder="Email*" formControlName="email">
+          <ul class="help-block">
+            <!-- Trow an error if username is defined, if not don't show error -->
+            <li *ngIf="registerForm.controls.email.errors?.required && registerForm.controls.email.dirty">This field is required</li>
+            <li *ngIf="registerForm.controls.email.errors?.minlength && registerForm.controls.email.dirty || registerForm.controls.email.errors?.maxlength && registerForm.controls.email.dirty ">E-mail must be at least 8 characters long but not longer than 40</li>
+            <li *ngIf="registerForm.controls.email.errors?.validateEmail && registerForm.controls.email.dirty">Must be a valid e-mail</li>
+          </ul>
+        </div>
+
+        <!-- Material input password -->
+        <div class="md-form" [ngClass]="{'has-error': (registerForm.controls.password.errors && registerForm.controls.password.dirty), 'has-success': !registerForm.controls.password.errors}">
+          <i class="fa fa-lock prefix grey-text"></i>
+          <input type="password" name="password" id="materialFormRegisterPasswordEx" class="form-control" placeholder="Password*" formControlName="password">
+          <ul class="help-block">
+            <!-- Trow an error if username is defined, if not don't show error -->
+            <li *ngIf="registerForm.controls.password.errors?.required && registerForm.controls.password.dirty">This field is required</li>
+            <li *ngIf="registerForm.controls.password.errors?.minlength && registerForm.controls.password.dirty || registerForm.controls.password.errors?.maxlength && registerForm.controls.password.dirty ">Password must be at least 8 characters long but not longer than 25</li>
+            <li *ngIf="registerForm.controls.password.errors?.validatePass && registerForm.controls.password.dirty">Password must have minimum eight characters, at least one letter and one number</li>
+          </ul>
+        </div>
+
+        <!-- Material input password -->
+        <div class="md-form" [ngClass]="{'has-error': (registerForm.controls.confirm.errors && registerForm.controls.confirm.dirty) || (registerForm.errors?.confirmPass && registerForm.controls.confirm.dirty), 'has-success': !registerForm.controls.confirm.errors && !registerForm.errors?.confirmPass}">
+          <i class="fa fa-exclamation-triangle prefix grey-text"></i>
+          <input type="password" name="confirm" id="materialFormRegisterConfirmEx" class="form-control" placeholder="Confirm Password*"
+            formControlName="confirm">
+          <ul class="help-block">
+            <!-- Trow an error if username is defined, if not don't show error -->
+            <li *ngIf="registerForm.controls.confirm.errors?.required && registerForm.controls.confirm.dirty">This field is required</li>
+            <li *ngIf="registerForm.errors?.confirmPass && registerForm.controls.confirm.dirty">Passwords must match!!</li>
+          </ul>
+        </div>
+
+        <div class="text-center mt-4">
+          <button class="btn btn-primary" type="submit" [disabled]="!registerForm.valid">Register</button>
+        </div>
+      </form>
+
+      <p>username: {{ registerForm.controls.username.value }}</p>
+      <p>email: {{ registerForm.controls.email.value }}</p>
+      <p>password: {{ registerForm.controls.password.value }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Material form register -->
