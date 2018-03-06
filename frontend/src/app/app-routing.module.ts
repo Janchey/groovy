@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const appRoutes: Routes = [
     {
@@ -16,6 +18,14 @@ const appRoutes: Routes = [
     {
         path: 'registration',
         component: RegistrationComponent // Go to Registration
+    },
+    {
+        path: 'login',
+        component: LoginComponent // Go to Login
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent // Go to Login
     },
     {
         path: '**',

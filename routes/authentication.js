@@ -1,4 +1,6 @@
 const User = require('../model/user'); // Importing User Schema
+const jsonWt = require('jsonwebtoken');
+const config = require('../config/database');
 
 module.exports = (router) => {
     router.post('/register', (req, res) => {
@@ -27,7 +29,7 @@ module.exports = (router) => {
                             res.json({ success: false, message: err.errors.username.message });
                         } else if (err.errors.password) {
                             res.json({ success: false, message: err.errors.password.message });
-                        } else{
+                        } else {
                             res.json({ success: false, message: err }); // Returns any error that has not been covered
                         }
                     }
@@ -43,37 +45,89 @@ module.exports = (router) => {
 
     });
 
-    router.get('/checkEmail/:email', (req,res) => {
-        if(!req.params.email) {
-            res.json({ success: false, message: 'You must enter email'})
+    router.get('/checkEmail/:email', (req, res) => {
+        if (!req.params.email) {
+            res.json({ success: false, message: 'You must enter email' })
         } else {
-            User.findOne({email: req.params.email}, (err, user) => {
-                if(err){
-                    res.json({success: false, message: err });
-                } else if(user){
-                    res.json({success: false, message: 'E-mail is already registered'})
+            User.findOne({ email: req.params.email }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: err });
+                } else if (user) {
+                    res.json({ success: false, message: 'E-mail is already registered' })
                 } else {
-                    res.json({success: true, message: 'E-mail is available'})
+                    res.json({ success: true, message: 'E-mail is available' })
                 }
             });
         }
     });
 
-    router.get('/checkUsername/:username', (req,res) => {
-        if(!req.params.username) {
-            res.json({ success: false, message: 'You must enter username'})
+    router.get('/checkUsername/:username', (req, res) => {
+        if (!req.params.username) {
+            res.json({ success: false, message: 'You must enter username' })
         } else {
-            User.findOne({username: req.params.username}, (err, user) => {
-                if(err){
-                    res.json({success: false, message: err });
-                } else if(user){
-                    res.json({success: false, message: 'Username is already registered'})
+            User.findOne({ username: req.params.username }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: err });
+                } else if (user) {
+                    res.json({ success: false, message: 'Username is already registered' })
                 } else {
-                    res.json({success: true, message: 'Username is available'})
+                    res.json({ success: true, message: 'Username is available' })
                 }
             });
         }
     });
 
-return router;
+    router.post('/login', (req, res) => {
+        if (!req.body.username) {
+            res.json({ success: false, message: 'Enter a username' });
+        } else if (!req.body.password) {
+            res.json({ success: false, message: 'Enter a password' });
+        } else {
+            User.findOne({ username: req.body.username.toLowerCase() }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: err });
+                } else if (!user) {
+                    res.json({ success: false, message: 'Username not found' });
+                } else {
+                    const validPass = user.comparePassword(req.body.password);
+                    if (!validPass) {
+                        res.json({ success: false, message: 'Wrong password' });
+                    } else {
+                        const token = jsonWt.sign({ userID: user._id }, config.secret, { expiresIn: '12h' });
+                        res.json({ success: true, message: 'Success', token: token, user: { username: user.username } });
+                    }
+                }
+            });
+        }
+    });
+
+    router.use((req, res, next) => {
+        const token = req.headers['authorization'];
+        if (!token) {
+            res.json({ success: false, message: 'No token provided' });
+        } else {
+            jsonWt.verify(token, config.secret, (err, decoded) => {
+                if (err) {
+                    res.json({ success: false, message: 'Token has expired: ' + err });
+                } else {
+                    req.decoded = decoded;
+                    next();
+                }
+            });
+        }
+    });
+
+    router.get('/profile', (req, res) => {
+        User.findOne({ _id: req.decoded.userID}).select('username email').exec((err, user) =>{
+            if (err) {
+                res.json({ success: false, message: err });
+            } else if (!user) {
+                res.json({ success: false, message: 'User has not been found' });
+            } else{
+                res.json({ success: true, user: user });
+            }
+        });
+    });
+
+    return router;
 }
