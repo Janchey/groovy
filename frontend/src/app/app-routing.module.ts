@@ -5,6 +5,9 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ComicsComponent } from './components/comics/comics.component';
+import { AuthGuard } from './guards/auth.guard';
+import { NotAuthGuard } from './guards/notAuth.guard';
 
 const appRoutes: Routes = [
     {
@@ -13,19 +16,28 @@ const appRoutes: Routes = [
     },
     {
         path: 'dashboard',
-        component: DashboardComponent // Go to dashboard
+        component: DashboardComponent, // Go to dashboard
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'comics',
+        component: ComicsComponent, // Go to dashboard
+        canActivate: [AuthGuard]
     },
     {
         path: 'registration',
-        component: RegistrationComponent // Go to Registration
+        component: RegistrationComponent, // Go to Registration
+        canActivate: [NotAuthGuard]
     },
     {
         path: 'login',
-        component: LoginComponent // Go to Login
+        component: LoginComponent, // Go to Login
+        canActivate: [NotAuthGuard]
     },
     {
         path: 'profile',
-        component: ProfileComponent // Go to Login
+        component: ProfileComponent, // Go to Profile
+        canActivate: [AuthGuard]
     },
     {
         path: '**',
