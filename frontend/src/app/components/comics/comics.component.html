@@ -1,57 +1,195 @@
 <div class="container">
   <h1 class="page-header">Comic Books</h1>
   <div class="row">
-    <!-- <div class="col-12 show-hide-message">
+     <div class="col-12 show-hide-message">
       <div [ngClass]="showMessage">
         {{message}}
       </div>
-    </div> -->
+    </div> 
     <div class="col-2">
-      <button type="button" name="button" class="btn btn-warning" *ngIf="!newPost" (click)="newComicForm()">
+      <button type="button" name="button" class="btn btn-warning" *ngIf="!newComic" (click)="newComicForm()">
         <i class="far fa-plus-square"></i>
         &nbsp;New Comic
       </button>
     </div>
     <div class="col-2">
-      <button type="button" [disabled]="loadingComics" name="button" class="btn btn-default" *ngIf="!newPost" (click)="reloadComics()">
+      <button type="button" [disabled]="loadingComics" name="button" class="btn btn-default" *ngIf="!newComic" (click)="reloadComics()">
         <i class="fas fa-redo"></i>
         &nbsp;Reload
       </button>
     </div>
   </div>
+  <!-- New Comic Form -->
+
+  <form [formGroup]="comicForm" name="comicForm" (submit)="onComicFormSubmit()" *ngIf="newComic">
+    <!-- Title Input -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <div [ngClass]="{'has-success': comicForm.controls.title.valid, 'has-error': comicForm.controls.title.dirty && comicForm.controls.title.errors}">
+        <input type="text" name="title" class="form-control" placeholder="*Comic Title" autocomplete="off" formControlName="title"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.title.dirty && comicForm.controls.title.errors?.required">This field is required.</li>
+          <li *ngIf="(comicForm.controls.title.dirty && comicForm.controls.title.errors?.minlength) || (comicForm.controls.title.dirty && comicForm.controls.title.errors?.maxlength)">Min length: 3, Max length: 80</li>
+          <li *ngIf="comicForm.controls.title.dirty && comicForm.controls.title.errors?.alphaNumericValidation">Must be a letter or number</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Creator Input -->
+    <div class="form-group">
+      <label for="creator">Creator</label>
+      <div [ngClass]="{'has-success': comicForm.controls.creator.valid, 'has-error': comicForm.controls.creator.dirty && comicForm.controls.creator.errors}">
+        <input type="text" name="creator" class="form-control" placeholder="*Comic creator" autocomplete="off" formControlName="creator"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.creator.dirty && comicForm.controls.creator.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Writer Input -->
+    <div class="form-group">
+      <label for="writer">Writer</label>
+      <div [ngClass]="{'has-success': comicForm.controls.writer.valid, 'has-error': comicForm.controls.writer.dirty && comicForm.controls.writer.errors}">
+        <input type="text" name="writer" class="form-control" placeholder="*Comic writer" autocomplete="off" formControlName="writer"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.writer.dirty && comicForm.controls.writer.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Artist Input -->
+    <div class="form-group">
+      <label for="artist">Artist</label>
+      <div [ngClass]="{'has-success': comicForm.controls.artist.valid, 'has-error': comicForm.controls.artist.dirty && comicForm.controls.artist.errors}">
+        <input type="text" name="artist" class="form-control" placeholder="*Comic artist" autocomplete="off" formControlName="artist"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.artist.dirty && comicForm.controls.artist.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- Publisher Input -->
+    <div class="form-group">
+      <label for="publisher">Publisher</label>
+      <div [ngClass]="{'has-success': comicForm.controls.publisher.valid, 'has-error': comicForm.controls.publisher.dirty && comicForm.controls.publisher.errors}">
+        <input type="text" name="publisher" class="form-control" placeholder="*Comic publisher" autocomplete="off" formControlName="publisher"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.publisher.dirty && comicForm.controls.publisher.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Status Input -->
+    <div class="form-group">
+      <label for="status">Status</label>
+      <div [ngClass]="{'has-success': comicForm.controls.status.valid, 'has-error': comicForm.controls.status.dirty && comicForm.controls.status.errors}">
+        <input type="text" name="status" class="form-control" placeholder="*Comic status" autocomplete="off" formControlName="status"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.status.dirty && comicForm.controls.status.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Comic Number Input -->
+    <div class="form-group">
+      <label for="number">Comic number</label>
+      <div [ngClass]="{'has-success': comicForm.controls.number.valid, 'has-error': comicForm.controls.number.dirty && comicForm.controls.number.errors}">
+        <input type="text" name="number" class="form-control" placeholder="*Comic published year" autocomplete="off" formControlName="number"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.number.dirty && comicForm.controls.number.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Original Comic Number Input -->
+    <div class="form-group">
+      <label for="originalNumber">Original comic number</label>
+      <div [ngClass]="{'has-success': comicForm.controls.originalNumber.valid, 'has-error': comicForm.controls.originalNumber.dirty && comicForm.controls.originalNumber.errors}">
+        <input type="text" name="originalNumber" class="form-control" placeholder="*Comic published year" autocomplete="off" formControlName="originalNumber"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.originalNumber.dirty && comicForm.controls.originalNumber.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Year Published Input -->
+    <div class="form-group">
+      <label for="yearPublished">Year published</label>
+      <div [ngClass]="{'has-success': comicForm.controls.yearPublished.valid, 'has-error': comicForm.controls.yearPublished.dirty && comicForm.controls.yearPublished.errors}">
+        <input type="text" name="yearPublished" class="form-control" placeholder="*Comic published year" autocomplete="off" formControlName="yearPublished"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.yearPublished.dirty && comicForm.controls.yearPublished.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ganre Input -->
+    <div class="form-group">
+      <label for="ganre">Ganre</label>
+      <div [ngClass]="{'has-success': comicForm.controls.ganre.valid, 'has-error': comicForm.controls.ganre.dirty && comicForm.controls.ganre.errors}">
+        <input type="text" name="ganre" class="form-control" placeholder="*Comic ganre" autocomplete="off" formControlName="ganre"
+        />
+        <ul class="help-block">
+          <li *ngIf="comicForm.controls.ganre.dirty && comicForm.controls.ganre.errors?.required">This field is required.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Go Back Button -->
+    <button [disabled]="lockSubmit" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
+    <!-- Submit Button -->
+    <button [disabled]="lockSubmit || !comicForm.valid" type="submit" name="button" (click)="onComicFormSubmit" class="btn btn-success">Submit</button>
+
+  </form>
+
   <div class="row">
     <div class="col-12" *ngIf="!newPost">
-      <div class="card">
-        <h3 class="card-header">Comic Title</h3>
+      <div class="card" *ngFor="let comic of comicList">
+        <h3 class="card-header">{{comic.title}} </h3>
         <div class="card-block">
           <!-- card block -->
           <p class="card-text">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy
-            text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-            book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+            {{comic.creator}}  
+            {{comic.writer}}  
+            {{comic.artist}}  
+            {{comic.publisher}}  
+            {{comic.status}}  
+            {{comic.number}}  
+            {{comic.originalNumber}}  
+            {{comic.yearPublished}}  
+            {{comic.ganre}}  
           </p>
         </div>
         <!-- end card block -->
         <!-- card footer -->
         <div class="card-footer text-muted">
           <p>
-            <strong>Published by: </strong>Dejan Jankov</p>
+            <strong>Published by: </strong>{{comic.createdBy}}</p>
           <p>
-            <strong>Date: </strong>
+            <strong>Date: </strong> {{comic.publishedDate | date: 'dd.MMM.yyyy'}}  
           </p>
           <div>
             <p>
-              <strong>Likes: </strong>22</p>
+              <strong>Likes: </strong>{{comic.likes}}</p>
             <p>
-              <strong>Dislikes: </strong>5</p>
+              <strong>Dislikes: </strong>{{comic.dislikes}}</p>
           </div>
-          <a href="#">
+          <a [routerLink]="['/edit-comics/', comic._id]">
             <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
           </a>
-          <a href="#">
-            <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
+          <a [routerLink]="['/delete-comic/', comic._id]">
+            <button type="button" name="button" class="btn btn-sm btn-danger" >Delete</button>
           </a>
 
           <!-- likes dropdown -->
@@ -83,16 +221,16 @@
         <!-- end card footer -->
 
         <ul class="list-group">
-            <li class="list-group-item">
-                <button type="button"  name="button" class="btn btn-sm btn-danger"  (click)="writeComment()">Comment</button>
-               <!-- <form class="form-group">
+          <li class="list-group-item">
+            <button type="button" name="button" class="btn btn-sm btn-danger" (click)="writeComment()">Comment</button>
+            <!-- <form class="form-group">
                   <textarea name="comment" rows="10" cols="35" class="form-control"></textarea>
                   <button type="button"  name="button" class="btn btn-sm btn-info">Submit Post</button>
                   <button type="button"  name="button" class="btn btn-sm btn-danger">Cancel</button>
                 </form>
               -->
-            </li>
-          </ul>
+          </li>
+        </ul>
       </div>
       <!-- end card -->
     </div>

@@ -63,6 +63,10 @@ const ComicSchema = new Schema({
         required: true,
         validate: titleValidation
     },
+    image: {
+        data: Buffer,
+        contentType: String
+    },
     creator: {
         type: String,
         lowercase: true,
@@ -88,32 +92,49 @@ const ComicSchema = new Schema({
         lowercase: true,
         required: true
     },
-    number: Number,
-    originalNumber: Number,
+    number:{
+        type: Number,
+        min: 1,
+        required: true
+    },
+    originalNumber: {
+        type: Number,
+        min: 1,
+        required: true
+    },
     yearPublished: {
         type: Number,
         min: 1900,
-        max: 2100
+        max: 2018,
+        required: true
     },
-    ganre: { type: Array },
+    ganre: {
+        type: Array,
+        required: true
+    },
+    createdBy: { type: String },
+    publishedDate: { 
+        type: Date, 
+        default: Date.now() 
+    },
     likes: {
-        number: Number,
+        type: Number,
         default: 0
     },
     likedBy: {
-        number: Array
+        type: Array
     },
     dislikes: {
-        number: Number,
+        type: Number,
         default: 0
     },
     dislikedBy: {
-        number: Array
+        type: Array
     },
-    comments:[{
-        comment: {type: String, validate: commentValidation },
+    comments: [{
+        comment: { type: String, validate: commentValidation },
         commentator: { type: String },
-        
+
     }]
 });
 

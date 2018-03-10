@@ -6,6 +6,8 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ComicsComponent } from './components/comics/comics.component';
+import { EditComicsComponent } from './components/comics/edit-comics/edit-comics.component';
+import { DeleteComicComponent } from './components/comics/delete-comic/delete-comic.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthGuard } from './guards/notAuth.guard';
 
@@ -21,7 +23,17 @@ const appRoutes: Routes = [
     },
     {
         path: 'comics',
-        component: ComicsComponent, // Go to dashboard
+        component: ComicsComponent, // Go to comics page 
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'edit-comics/:id',
+        component: EditComicsComponent, // Go to edit comics
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'delete-comic/:id',
+        component: DeleteComicComponent, // Go to delete comics
         canActivate: [AuthGuard]
     },
     {

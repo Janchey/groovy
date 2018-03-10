@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const config = require('./config/database');
 const path = require('path');
 const authenticate = require('./routes/authentication')(router);
+const comics = require('./routes/comics')(router);
 const cors = require('cors');
 
 mongoose.Promise = global.Promise;
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/frontend/dist/'));
 app.use('/authentication', authenticate);
+app.use('/comics', comics);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/frontend/dist/index.html'));

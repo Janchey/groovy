@@ -3,12 +3,15 @@
     <div class="row btn-padding">
       <div class="col-lg-3 text-center"></div>
       <div class="col-lg-3 text-center">
-        <a routerLink="/registration" class="btn btn-primary">Register</a>
+        <a routerLink="/registration" class="btn btn-primary" *ngIf="!authService.loggedIn()">Register</a>
+        <a routerLink="/comics" class="btn btn-primary" *ngIf="authService.loggedIn()">See the Latest Comics</a>
       </div>
       <div class="col-lg-3 text-center">
-        <a routerLink="/login" class="btn btn-default">Login</a>
+        <a routerLink="/login" class="btn btn-default" *ngIf="!authService.loggedIn()">Login</a>
+        <a routerLink="/profile" class="btn btn-success" *ngIf="authService.loggedIn()">View Profile</a>
       </div>
-      <div class="col-lg-3 text-center"></div>
+      <div class="col-lg-3 text-center">
+      </div>
     </div>
   </div>
 </div>
