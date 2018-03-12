@@ -48,4 +48,23 @@ export class ComicsService {
     return this.http.delete(this.domain + '/comics/deleteComic/' + id,  this.options).map(res => res.json());
   }
 
-}
+  likeComic(id){
+    const comicInfo = { id: id };
+    return this.http.put(this.domain + '/comics/like/', comicInfo,  this.options).map(res => res.json());
+  }
+
+  dislikeComic(id){
+    const comicInfo = { id: id };
+    return this.http.put(this.domain + '/comics/dislike/', comicInfo,  this.options).map(res => res.json());
+  }
+
+  comicComment(id, comment) {
+    this.createAuthHeader(); 
+    const comicInfo = { 
+      id: id,
+      comment: comment
+     };
+    return this.http.post(this.domain + '/comics/comment/', comicInfo,  this.options).map(res => res.json());
+  }
+  }
+

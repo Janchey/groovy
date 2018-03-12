@@ -1,10 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+/* -------------------
+GLOBAL STYLEs
+--------------------*/
+.container{
+  box-shadow: 0 0 20px 0 rgba(0,0,0,.1);
+}
 
-.margin-100 {
-    margin-top: 100px;
-  }
-  @media (min-width: 992px) {
-    .margin-100 {
-      margin-top: 100px;
-    }
-  }
+h1,h2,h3,h4,h5{
+  color:#f9f9f9;
+}
+
+.grooy-image{
+background-image: url(./assets/images/splatter.png);
+background-repeat: repeat;
+background-position: 0px 0px;
+
+}
+
+.background-green{
+  background: #476660;
+  background-image: url(./assets/images/splatter.png);
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+}
+/* -------------------
+MENU
+---------------------*/
+.navbar-dark.bg-dark {
+  background-color: #191919 !important;
+}
+
+.btn{
+  border: solid #191919;
+  border-color: #191919;
+  border-width: 1px 1px 3px 3px;
+  border-radius: 4% 95% 6% 95%/95% 4% 92% 5%;
+  transform: rotate(-2deg);
+  font-weight: 700;
+}
+
+.text-muted {
+  color: #3a3f44!important;
+}
+

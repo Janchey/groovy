@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { AuthService } from '../../services/auth.service';
 import { ComicsService } from '../../services/comics.service';
 import { Profile } from 'selenium-webdriver/firefox';
+import { Comment } from '@angular/compiler';
 
 
 @Component({
@@ -17,9 +18,12 @@ export class ComicsComponent implements OnInit {
   newComic = false;
   loadingComics = false;
   comicForm;
+  commentForm;
   lockSubmit = false;
   username;
   comicList;
+  newComment = [];
+  showComments = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,6 +32,7 @@ export class ComicsComponent implements OnInit {
 
   ) {
     this.generateComicForm();
+    this.generateCommentForm();
   }
 
   generateComicForm() {
@@ -62,6 +67,16 @@ export class ComicsComponent implements OnInit {
     }
   }
 
+  generateCommentForm() {
+    this.commentForm = this.formBuilder.group({
+      comment: ['', Validators.compose([
+        Validators.required,
+        Validators.maxLength(150),
+        Validators.minLength(3)
+      ])]
+    });
+  }
+
   newComicForm() {
     this.newComic = true;
   }
@@ -75,8 +90,18 @@ export class ComicsComponent implements OnInit {
     }, 2000);
   }
 
-  writeComment() {
+  writeComment(id) {
+    this.commentForm.reset(); // Reset the comment form
+    this.newComment = []; //clear the array
+    this.newComment.push(id); // Add the comic that is being commented to the array
+  }
 
+  cancelComment(id){
+    const getIndex = this.newComment.indexOf(id);
+    this.newComment.splice(getIndex, 1);
+    this.commentForm.reset();
+    this.unlockCommentForm();
+    this.lockSubmit = false;
   }
 
   onComicFormSubmit() {
@@ -118,6 +143,23 @@ export class ComicsComponent implements OnInit {
     });
   }
 
+  submitComment(id){
+    this.lockCommentForm();
+    this.lockSubmit = true;
+    const getComment= this.commentForm.get('comment').value;
+    this.comicsService.comicComment(id, getComment).subscribe(data =>{
+      this.getAllComics();
+      const getIndex = this.newComment.indexOf(id);
+      this.newComment.splice(getIndex, 1);
+      this.unlockCommentForm();
+      this.commentForm.reset();
+      this.lockSubmit = false;
+      if (this.showComments.indexOf(id) < 0){
+        this.expand(id);
+      }
+    });
+  }
+
   goBack() {
     window.location.reload();
   }
@@ -150,10 +192,39 @@ export class ComicsComponent implements OnInit {
 
   }
 
+  lockCommentForm(){
+    this.commentForm.get('comment').disable();
+  }
+
+  unlockCommentForm(){
+    this.commentForm.get('comment').enable();
+  }
+
   getAllComics(){
     this.comicsService.getAllComics().subscribe(data => {
       this.comicList = data.comics;
     });
+  }
+
+  likeComic(id){
+    this.comicsService.likeComic(id).subscribe(data => {
+      this.getAllComics();
+    });
+  }
+
+  dislikeComic(id){
+    this.comicsService.dislikeComic(id).subscribe(data => {
+      this.getAllComics();
+    });
+  }
+
+  expand(id){
+    this.showComments.push(id);
+  }
+
+  collapse(id){
+    const getIndex = this.showComments.indexOf(id);
+    this.showComments.splice(getIndex, 1);
   }
 
   ngOnInit() {

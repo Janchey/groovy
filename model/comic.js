@@ -41,7 +41,7 @@ const titleValidation = [
 let checkComment = (comment) => {
     if (!comment[0]) {
         return false;
-    } else if (comment[0].length < 3 || comment[0].length > 200) {
+    } else if (comment[0].length < 3 || comment[0].length > 150) {
         return false;
     } else {
         return true;

@@ -21,6 +21,7 @@ import { NotAuthGuard } from './guards/notAuth.guard';
 import { ComicsComponent } from './components/comics/comics.component';
 import { EditComicsComponent } from './components/comics/edit-comics/edit-comics.component';
 import { DeleteComicComponent } from './components/comics/delete-comic/delete-comic.component';
+import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { DeleteComicComponent } from './components/comics/delete-comic/delete-co
     ProfileComponent,
     ComicsComponent,
     EditComicsComponent,
-    DeleteComicComponent
+    DeleteComicComponent,
+    PublicProfileComponent
   ],
   imports: [
     BrowserModule,

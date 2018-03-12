@@ -1,11 +1,45 @@
+
+/*---------------------
+HEADER
+---------------------*/
 .head{
-    margin: 4em 0 0 0;
     max-width: 1920px;
     max-height: 653px;
+    height: 100%;
     min-height: 250px;
+    padding: 30% 0 2% 0;
 }
 .bckg-image{
     background-image: url(../../../assets/images/home-head.jpg);
-    background-size: 100%;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
+}
+
+
+.btn-primary{
+    color: #191919;
+    background-color: #f9f9f9;
+}
+/* styles for two buttons in header*/
+.head .btn-success, .head .btn-default{
+    border: none; 
+    border-color: transparent; 
+    background-color: transparent;
+    border-width: 0px; 
+    border-radius: 4% 95% 6% 95%/95% 4% 92% 5%; 
+    -webkit-transform: rotate(2deg); 
+    transform: rotate(2deg);
+    color: #f9f9f9;
+    font-weight: 700;
+}  
+
+.blend-in{
+    height: 100%;
+    background-color: #191919;
+    background: linear-gradient(#191919, #541a17);
+    background: -webkit-linear-gradient(#191919 , #541a17);
+    background: -moz-linear-gradient(#191919, #541a17);
+    background: -ms-linear-gradient(#191919, #541a17);
+    background: -o-linear-gradient(#191919, #541a17);
 }

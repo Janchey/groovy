@@ -104,11 +104,11 @@ module.exports = (router) => {
     router.put('/updateComic', (req, res) => {
         if (!req.body._id) {
             res.json({ success: false, message: 'No comic id has been provided' });
-        } else{
-            Comic.findOne({_id: req.body._id }, (err, comic) => {
-                if (err){
+        } else {
+            Comic.findOne({ _id: req.body._id }, (err, comic) => {
+                if (err) {
                     res.json({ success: false, message: 'You must provide a valid id' });
-                } else if (!comic){
+                } else if (!comic) {
                     res.json({ success: false, message: 'Cant find comic id' });
                 } else {
                     comic.title = req.body.title;
@@ -134,20 +134,20 @@ module.exports = (router) => {
         }
     });
 
-    router.delete('/deleteComic/:id', (req, res ) => {
-        if(!req.params.id){
+    router.delete('/deleteComic/:id', (req, res) => {
+        if (!req.params.id) {
             res.json({ success: false, message: 'No id was provided' });
-        }else {
-            Comic.findOne({_id: req.params.id}, (err, comic) => {
-                if (err){
+        } else {
+            Comic.findOne({ _id: req.params.id }, (err, comic) => {
+                if (err) {
                     res.json({ success: false, message: 'Cant delete comic. Invalid id' });
-                } else if(!comic){
+                } else if (!comic) {
                     res.json({ success: false, message: 'Comic was not found' });
-                } else{
+                } else {
                     comic.remove((err) => {
-                        if (err){
+                        if (err) {
                             res.json({ success: false, message: err });
-                        } else{
+                        } else {
                             res.json({ success: true, message: 'Comic has been deleted!' });
                         }
                     });
@@ -155,6 +155,139 @@ module.exports = (router) => {
             });
         }
     });
+
+    router.put('/like', (req, res) => {
+        if (!req.body.id) {
+            res.json({ success: false, message: 'No comic id has been provided' });
+        } else {
+            Comic.findOne({ _id: req.body.id }, (err, comic) => {
+                if (err) {
+                    res.json({ success: false, message: 'You must provide a valid id' });
+                } else if (!comic) {
+                    res.json({ success: false, message: 'Cant find comic whit a given id' });
+                } else {
+                    User.findOne({ _id: req.decoded.userID }, (err, user) => {
+                        if (err) {
+                            res.json({ success: false, message: 'Something went wrong' });
+                        } else if (!user) {
+                            res.json({ success: false, message: 'Cant authenticate user' });
+                        } else if (comic.likedBy.includes(user.username)) {
+                            res.json({ success: false, message: 'You can like comic only once!' });
+                        } else if (comic.dislikedBy.includes(user.username)) {
+                            comic.dislikes--; //decrement dislikes if the same user likes a comic after he disliked it
+                            const dislikeArrayIndex = comic.dislikedBy.indexOf(user.username); //check the index of the user who disliked the comic
+                            comic.dislikedBy.splice(dislikeArrayIndex, 1); //remove user from a disliked array
+                            comic.likes++; //increment likes
+                            comic.likedBy.push(user.username);//add user to a liked array
+                            comic.save((err) => {
+                                if (err) {
+                                    res.json({ success: false, message: 'Something went wrong: ' + err });
+                                } else {
+                                    res.json({ success: true, message: 'Comic has been liked' });
+                                }
+                            });
+                        } else {
+                            comic.likes++;
+                            comic.likedBy.push(user.username);
+                            comic.save((err) => {
+                                if (err) {
+                                    res.json({ success: false, message: 'Something went wrong: ' + err });
+                                } else {
+                                    res.json({ success: true, message: 'Comic has been liked' });
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+    });
+
+    router.put('/dislike', (req, res) => {
+        if (!req.body.id) {
+            res.json({ success: false, message: 'No comic id has been provided' });
+        } else {
+            Comic.findOne({ _id: req.body.id }, (err, comic) => {
+                if (err) {
+                    res.json({ success: false, message: 'You must provide a valid id' });
+                } else if (!comic) {
+                    res.json({ success: false, message: 'Cant find comic whit a given id' });
+                } else {
+                    User.findOne({ _id: req.decoded.userID }, (err, user) => {
+                        if (err) {
+                            res.json({ success: false, message: 'Something went wrong' });
+                        } else if (!user) {
+                            res.json({ success: false, message: 'Cant authenticate user' });
+                        } else if (comic.dislikedBy.includes(user.username)) {
+                            res.json({ success: false, message: 'You can dislike comic only once!' });
+                        } else if (comic.likedBy.includes(user.username)) {
+                            comic.likes--; //decrement likes if the same user likes a comic after he liked it
+                            const likeArrayIndex = comic.likedBy.indexOf(user.username); //check the index of the user who liked the comic
+                            comic.likedBy.splice(likeArrayIndex, 1); //remove user from a liked array
+                            comic.dislikes++; //increment the dislikes
+                            comic.dislikedBy.push(user.username); // add user to a disliked array
+                            comic.save((err) => {
+                                if (err) {
+                                    res.json({ success: false, message: 'Something went wrong: ' + err });
+                                } else {
+                                    res.json({ success: true, message: 'Comic has been disliked' });
+                                }
+                            });
+                        } else {
+                            comic.dislikes++;
+                            comic.dislikedBy.push(user.username);
+                            comic.save((err) => {
+                                if (err) {
+                                    res.json({ success: false, message: 'Something went wrong: ' + err });
+                                } else {
+                                    res.json({ success: true, message: 'Comic has been disliked' });
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+    });
+
+    router.post('/comment', (req, res) => {
+        if (!req.body.comment) {
+            res.json({ success: false, message: 'No comment provided'});
+        } else if (!req.body.id){
+            res.json({ success: false, message: 'No id was provided ' });
+        } else {
+            Comic.findOne({_id: req.body.id }, (err, comic) => {
+                if(err){
+                    res.json({ success: false, message: 'Invalid comic Id'});
+                } else if(!comic) {
+                    res.json({ success: false, message: 'No comic was found'});
+                } else {
+                    User.findOne({_id: req.decoded.userID }, (err, user) => {
+                        if(err){
+                            res.json({ success: false, message: 'Invalid user Id'});
+                        } else if(!user) {
+                            res.json({ success: false, message: 'No user was found'});
+                        } else {
+                            comic.comments.push({
+                                comment: req.body.comment,
+                                commentator: user.username
+                            });
+                            comic.save((err) => {
+                                if (err) {
+                                    res.json({ success: false, message: 'Something went wrong: ' + err });
+                                } else {
+                                    res.json({ success: true, message: 'Comment success' });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+
 
     return router;
 }
