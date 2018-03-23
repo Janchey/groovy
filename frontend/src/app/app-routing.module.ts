@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 import { ComicsComponent } from './components/comics/comics.component';
 import { EditComicsComponent } from './components/comics/edit-comics/edit-comics.component';
@@ -46,6 +47,11 @@ const appRoutes: Routes = [
         path: 'login',
         component: LoginComponent, // Go to Login
         canActivate: [NotAuthGuard]
+    },
+    {
+        path: 'edit-profile/:id',
+        component: EditProfileComponent, // Go to Edit Profile
+        canActivate: [AuthGuard]
     },
     {
         path: 'profile',

@@ -260,7 +260,7 @@ module.exports = (router) => {
         } else {
             Comic.findOne({_id: req.body.id }, (err, comic) => {
                 if(err){
-                    res.json({ success: false, message: 'Invalid comic Id'});
+                    res.json({ success: false, message: 'Invalid comic Id' +err});
                 } else if(!comic) {
                     res.json({ success: false, message: 'No comic was found'});
                 } else {

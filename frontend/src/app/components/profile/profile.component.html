@@ -9,6 +9,12 @@
       <ul class="list-group">
         <li class="list-group-item">Username: {{ username }}</li>
         <li class="list-group-item">Email: {{ email }}</li>
+        <a [routerLink]="['/edit-profile/', id]">
+          <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
+        </a>
+<!--        <a [routerLink]="['/delete-profile/', user._id]">
+          <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
+        </a> -->
       </ul>
     </div>
   </div>

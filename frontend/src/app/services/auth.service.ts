@@ -68,6 +68,16 @@ export class AuthService {
     return this.http.get(this.domain + '/authentication/profile', this.options).map(res => res.json());
   }
 
+  getUserId(id) {
+    this.createAuthHeader(); 
+    return this.http.get(this.domain + '/authentication/userId/' + id, this.options).map(res => res.json());
+  }
+
+  editProfile(user){
+    this.createAuthHeader(); 
+    return this.http.put(this.domain + '/authentication/updateProfile', user,  this.options).map(res => res.json());
+  }
+
   getPublicProfile(username){
     this.createAuthHeader();
     return this.http.get(this.domain + '/authentication/publicProfile/' + username, this.options).map(res => res.json());

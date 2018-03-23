@@ -41,7 +41,7 @@ const titleValidation = [
 let checkComment = (comment) => {
     if (!comment[0]) {
         return false;
-    } else if (comment[0].length < 3 || comment[0].length > 150) {
+    } else if (comment[0].comment.length < 3 || comment[0].comment.length > 150) {
         return false;
     } else {
         return true;
@@ -52,7 +52,7 @@ let checkComment = (comment) => {
 const commentValidation = [
     {
         validator: checkComment,
-        message: 'Comment must be at least 3 characters long but not longer than 200'
+        message: 'Comment must be at least 3 characters long but not longer than 150'
     }
 ];
 
@@ -132,9 +132,8 @@ const ComicSchema = new Schema({
         type: Array
     },
     comments: [{
-        comment: { type: String, validate: commentValidation },
-        commentator: { type: String },
-
+        comment: { type: String /*, validate: commentValidation */},
+        commentator: { type: String }
     }]
 });
 

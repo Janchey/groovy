@@ -129,6 +129,44 @@ module.exports = (router) => {
         });
     });
 
+    router.get('/userId/:id', (req, res) => {
+        User.findOne({ _id: req.params.id }, (err, user) => {
+            if (err) {
+                res.json({ success: false, message: 'Not a valid user id' });
+            } else if (!user) {
+                res.json({ success: false, message: 'No user fond with a given id' });
+            } else {
+                res.json({ success: true, user: user });
+            }
+        });
+    });
+
+    router.put('/updateProfile', (req, res) => {
+        if (!req.body._id) {
+            res.json({ success: false, message: 'No user id has been provided' });
+        } else {
+            User.findOne({ _id: req.body._id }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: 'You must provide a valid id' });
+                } else if (!user) {
+                    res.json({ success: false, message: 'Cant find user id' });
+                } else {
+                    user.email = req.body.email;
+                    user.username = req.body.username;
+                    user.password = req.body.password;
+                    user.save((err) => {
+                        if (err) {
+                            res.json({ success: false, message: err });
+                        } else {
+                            res.json({ success: true, message: 'Profile has been edited!' });
+                        }
+                    });
+
+                }
+            });
+        }
+    });
+
     router.get('/publicProfile/:username', (req, res) => {
         if (!req.params.username) {
             res.json({ success: false, message: 'No username was provided' })

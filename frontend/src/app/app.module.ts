@@ -22,6 +22,7 @@ import { ComicsComponent } from './components/comics/comics.component';
 import { EditComicsComponent } from './components/comics/edit-comics/edit-comics.component';
 import { DeleteComicComponent } from './components/comics/delete-comic/delete-comic.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
+import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { PublicProfileComponent } from './components/public-profile/public-profi
     ComicsComponent,
     EditComicsComponent,
     DeleteComicComponent,
-    PublicProfileComponent
+    PublicProfileComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
