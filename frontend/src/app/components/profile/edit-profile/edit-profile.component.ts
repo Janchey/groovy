@@ -36,7 +36,7 @@ export class EditProfileComponent implements OnInit {
         this.message = data.message;
         setTimeout(() => {
           this.router.navigate(['/profile']);
-        }), 2000;
+        }), 4000;
       }
     });
   }
@@ -51,6 +51,12 @@ export class EditProfileComponent implements OnInit {
       if (!data.success) {
         this.showMessage = 'alert alert-danger';
         this.message = 'User not found';
+      } else if (this.curentUrl.id !== data.user._id){
+        this.showMessage = 'alert alert-danger';
+        this.message = 'You dont have permision to edit this profile ';
+        setTimeout(() => {
+          this.router.navigate(['/profile']);
+        }), 4000;
       } else {
         this.user = data.user;
         this.loading = false;

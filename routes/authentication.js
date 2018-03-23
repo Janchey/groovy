@@ -146,7 +146,10 @@ module.exports = (router) => {
             res.json({ success: false, message: 'No user id has been provided' });
         } else {
             User.findOne({ _id: req.body._id }, (err, user) => {
-                if (err) {
+                if (req.decoded.userID !== req.body._id) {
+                    res.json({ success: false, message: 'You dont have permision to edit this profile ' });
+                    console.log(req.decoded.userID + "---" + req.body._id);
+                } else if (err) {
                     res.json({ success: false, message: 'You must provide a valid id' });
                 } else if (!user) {
                     res.json({ success: false, message: 'Cant find user id' });
@@ -157,6 +160,7 @@ module.exports = (router) => {
                     user.save((err) => {
                         if (err) {
                             res.json({ success: false, message: err });
+                            console.log(err);
                         } else {
                             res.json({ success: true, message: 'Profile has been edited!' });
                         }
