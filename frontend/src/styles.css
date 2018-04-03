@@ -2,11 +2,12 @@
 /* -------------------
 GLOBAL STYLEs
 --------------------*/
+
 .container{
   box-shadow: 0 0 20px 0 rgba(0,0,0,.1);
 }
 
-h1,h2,h3,h4,h5{
+h1,h2,h3,h4,h5,p,li,a,strong,label{
   color:#f9f9f9;
 }
 
@@ -14,7 +15,6 @@ h1,h2,h3,h4,h5{
 background-image: url(./assets/images/splatter.png);
 background-repeat: repeat;
 background-position: 0px 0px;
-
 }
 
 .background-green{
@@ -22,6 +22,16 @@ background-position: 0px 0px;
   background-image: url(./assets/images/splatter.png);
   background-repeat: no-repeat;
   background-position: 0px 0px;
+}
+
+.list-group-item, .form-group input, .modal-content{
+  background-color: #95A396;
+}
+
+.list-group:last-child .list-group-item:last-child, .modal-footer{
+  border:none;
+  border-radius: 0;
+  background-color: #191919;
 }
 /* -------------------
 MENU
@@ -42,4 +52,6 @@ MENU
 .text-muted {
   color: #3a3f44!important;
 }
+
+
 

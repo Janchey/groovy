@@ -141,6 +141,30 @@ module.exports = (router) => {
         });
     });
 
+    router.delete('/deleteProfile/:id', (req, res) => {
+        if (!req.params.id) {
+            res.json({ success: false, message: 'No id was provided' });
+        } else {
+            User.findOne({ _id: req.params.id }, (err, user) => {
+                if (req.decoded.userID !== req.params.id) {
+                    res.json({ success: false, message: 'You dont have permision to delete this profile! ' });
+                } else if (err) {
+                    res.json({ success: false, message: 'Cant delete user. Invalid id' });
+                } else if (!user) {
+                    res.json({ success: false, message: 'User was not found' });
+                } else {
+                    user.remove((err) => {
+                        if (err) {
+                            res.json({ success: false, message: err.message });
+                        } else {
+                            res.json({ success: true, message: 'Profile has been deleted!' });
+                        }
+                    });
+                }
+            });
+        }
+    });
+
     router.put('/updateProfile', (req, res) => {
         if (!req.body._id) {
             res.json({ success: false, message: 'No user id has been provided' });
@@ -148,7 +172,6 @@ module.exports = (router) => {
             User.findOne({ _id: req.body._id }, (err, user) => {
                 if (req.decoded.userID !== req.body._id) {
                     res.json({ success: false, message: 'You dont have permision to edit this profile ' });
-                    console.log(req.decoded.userID + "---" + req.body._id);
                 } else if (err) {
                     res.json({ success: false, message: 'You must provide a valid id' });
                 } else if (!user) {
@@ -159,7 +182,7 @@ module.exports = (router) => {
                     user.password = req.body.password;
                     user.save((err) => {
                         if (err) {
-                            res.json({ success: false, message: err });
+                            res.json({ success: false, message: err.message });
                             console.log(err);
                         } else {
                             res.json({ success: true, message: 'Profile has been edited!' });

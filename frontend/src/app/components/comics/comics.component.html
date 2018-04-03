@@ -1,5 +1,5 @@
 <div class="grooy-image">
-  <div class="container background-green pt-5">
+  <div class="container background-green p-5">
     <h1 class="page-header mb-4">Comic Books</h1>
     <div class="row">
       <div class="col-12 show-hide-message">
@@ -35,6 +35,14 @@
             <li *ngIf="comicForm.controls.title.dirty && comicForm.controls.title.errors?.alphaNumericValidation">Must be a letter or number</li>
           </ul>
         </div>
+      </div>
+
+      <!-- Image Input -->
+      <div class="form-group">
+        <label for="image">Image</label>
+        <br>
+          <input type="file" (change)="imageChange($event)"  name="image"  placeholder="Upload image"
+            accept="image/*">
       </div>
 
       <!-- Creator Input -->
@@ -159,56 +167,77 @@
           <h3 class="card-header">{{comic.title}} </h3>
           <div class="card-block">
             <!-- card block -->
-            <p class="card-text">
-
-              {{comic.creator}} {{comic.writer}} {{comic.artist}} {{comic.publisher}} {{comic.status}} {{comic.number}} {{comic.originalNumber}}
-              {{comic.yearPublished}} {{comic.ganre}}
-            </p>
+            <div class="card-body row">
+              <div class="col-lg-3 col-sm-12 mb-2 img-contain">
+                <img src={{comic.image}} alt={{comic.image}} />
+              </div>
+              <div class="col-lg-3 col-sm-6">
+                <ul class="list-group comic-info">
+                  <li>
+                    <strong>Creator:</strong> {{comic.creator}}</li>
+                  <li>
+                    <strong>Writer:</strong> {{comic.writer}}</li>
+                  <li>
+                    <strong>Artist: </strong> {{comic.artist}}</li>
+                  <li>
+                    <strong>Publisher:</strong> {{comic.publisher}} </li>
+                  <li>
+                    <strong>Status:</strong> {{comic.status}} </li>
+                  <li>
+                    <strong>Number:</strong> {{comic.number}}</li>
+                  <li>
+                    <strong>Original number:</strong> {{comic.originalNumber}}</li>
+                  <li>
+                    <strong>Year published:</strong> {{comic.yearPublished}}</li>
+                  <li>
+                    <strong>Ganre:</strong> {{comic.ganre}} </li>
+                </ul>
+              </div>
+              <div class="col-lg-6 col-sm-12">
+                <p>
+                  <strong>Date: </strong> {{comic.publishedDate | date: 'dd.MMM.yyyy'}}
+                </p>
+                <div>
+                  <p>
+                    <span>
+                      <strong>Likes: </strong>{{comic.likes}}</span>
+    
+                    <span>
+                      <strong>Dislikes: </strong>{{comic.dislikes}}</span>
+                  </p>
+                </div>
+                <a [routerLink]="['/edit-comics/', comic._id]">
+                  <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
+                </a>
+                <a [routerLink]="['/delete-comic/', comic._id]">
+                  <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
+                </a>
+    
+                <!-- likes dropdown -->
+                <div class="dropdown">
+                  <button type="button" name="button" class="btn btn-sm btn-success dropbtn" (click)="likeComic(comic._id)" [disabled]="comic.likedBy.indexOf(username) >= 0">
+                    <i class="far fa-thumbs-up"></i>
+                    &nbsp;Like
+                  </button>
+                  <div class="dropdown-content">
+                    <a [routerLink]="['/user', liker]" *ngFor="let liker of comic.likedBy">{{liker}}</a>
+                  </div>
+                </div>
+    
+                <!-- dislikes dropdown -->
+                <div class="dropdown">
+                  <button type="button" name="button" class="btn btn-sm btn-warning" (click)="dislikeComic(comic._id)" [disabled]="comic.dislikedBy.indexOf(username) >= 0">
+                    <i class="far fa-thumbs-down"></i>
+                    &nbsp;Dislike
+                  </button>
+                  <div class="dropdown-content">
+                    <a [routerLink]="['/user', disliker]" *ngFor="let disliker of comic.dislikedBy">{{disliker}}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- end card block -->
-          <!-- card footer -->
-          <div class="card-footer text-muted">
-            <p>
-              <strong>Published by: </strong>{{comic.createdBy}}</p>
-            <p>
-              <strong>Date: </strong> {{comic.publishedDate | date: 'dd.MMM.yyyy'}}
-            </p>
-            <div>
-              <p>
-                <strong>Likes: </strong>{{comic.likes}}</p>
-              <p>
-                <strong>Dislikes: </strong>{{comic.dislikes}}</p>
-            </div>
-            <a [routerLink]="['/edit-comics/', comic._id]">
-              <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
-            </a>
-            <a [routerLink]="['/delete-comic/', comic._id]">
-              <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
-            </a>
-
-            <!-- likes dropdown -->
-            <div class="dropdown">
-              <button type="button" name="button" class="btn btn-sm btn-success dropbtn" (click)="likeComic(comic._id)" [disabled]="comic.likedBy.indexOf(username) >= 0">
-                <i class="far fa-thumbs-up"></i>
-                &nbsp;Like
-              </button>
-              <div class="dropdown-content">
-                <a [routerLink]="['/user', liker]" *ngFor="let liker of comic.likedBy">{{liker}}</a>
-              </div>
-            </div>
-
-            <!-- dislikes dropdown -->
-            <div class="dropdown">
-              <button type="button" name="button" class="btn btn-sm btn-warning" (click)="dislikeComic(comic._id)" [disabled]="comic.dislikedBy.indexOf(username) >= 0">
-                <i class="far fa-thumbs-down"></i>
-                &nbsp;Dislike
-              </button>
-              <div class="dropdown-content">
-                <a [routerLink]="['/user', disliker]" *ngFor="let disliker of comic.dislikedBy">{{disliker}}</a>
-              </div>
-            </div>
-          </div>
-          <!-- end card footer -->
 
           <!-- Post Comment Box: Start -->
           <ul class="list-group">

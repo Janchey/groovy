@@ -1,20 +1,22 @@
-<div class="container margin-100">
-  <div class="row">
+<div class="container background-green">
+  <div class="row pt-5 mb-4">
     <div class="col-12">
       <h2 class="page-header">Profile Page</h2>
     </div>
   </div>
-  <div class="row">
+  <div class="row pb-5">
     <div class="col-12">
       <ul class="list-group">
-        <li class="list-group-item">Username: {{ username }}</li>
-        <li class="list-group-item">Email: {{ email }}</li>
-        <a [routerLink]="['/edit-profile/', id]">
-          <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
-        </a>
-<!--        <a [routerLink]="['/delete-profile/', user._id]">
-          <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
-        </a> -->
+        <li class="list-group-item"><strong>Username:</strong> {{ username }}</li>
+        <li class="list-group-item"><strong>Email:</strong> {{ email }}</li>
+        <li class="list-group-item">
+          <a [routerLink]="['/edit-profile/', id]">
+            <button type="button" name="button" class="btn btn-sm btn-info">Edit</button>
+          </a>
+          <a [routerLink]="['/delete-profile/', id]">
+            <button type="button" name="button" class="btn btn-sm btn-danger">Delete</button>
+          </a>
+        </li>
       </ul>
     </div>
   </div>

@@ -112,6 +112,7 @@ module.exports = (router) => {
                     res.json({ success: false, message: 'Cant find comic id' });
                 } else {
                     comic.title = req.body.title;
+                    comic.image = req.body.image;
                     comic.creator = req.body.creator;
                     comic.writer = req.body.writer;
                     comic.artist = req.body.artist;

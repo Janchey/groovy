@@ -1,28 +1,30 @@
-<div class="container">
-  <h1 class="page-header">Delete Comic Book</h1>
-  <div class="row">
-    <div class="col-12 show-hide-message" *ngIf="message">
-      <div [ngClass]="showMessage">
-        {{message}}
+<div class="grooy-image">
+  <div class="container background-green p-5">
+    <h1 class="page-header">Delete Comic Book</h1>
+    <div class="row">
+      <div class="col-12 show-hide-message" *ngIf="message">
+        <div [ngClass]="showMessage">
+          {{message}}
+        </div>
       </div>
-    </div>
-    <div class="col-12" *ngIf="comicIsFound">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title">Confirm</h3>
-          <button type="button" name="button" class="close" data-dsmiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete {{comic.title}}?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" name="button" class="btn btn-success" [disabled]="lockSubmit" (click)="deleteThisComic()">Yes</button>
-          <a routerLink="/comics">
-            <button type="button" name="button" class="btn btn-danger" [disabled]="lockSubmit">No</button>
-          </a>
-        </div>
+      <div class="col-12" *ngIf="comicIsFound">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Confirm</h3>
+            <button type="button" name="button" class="close" data-dsmiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete {{comic.title}}?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" name="button" class="btn btn-success" [disabled]="lockSubmit" (click)="deleteThisComic()">Yes</button>
+            <a routerLink="/comics">
+              <button type="button" name="button" class="btn btn-danger" [disabled]="lockSubmit">No</button>
+            </a>
+          </div>
 
 
+        </div>
       </div>
     </div>
   </div>

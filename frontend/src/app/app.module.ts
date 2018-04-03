@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { HomeComponent } from './components/home/home.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { AuthService } from './services/auth.service';
 import { ComicsService } from './services/comics.service';
@@ -23,6 +22,7 @@ import { EditComicsComponent } from './components/comics/edit-comics/edit-comics
 import { DeleteComicComponent } from './components/comics/delete-comic/delete-comic.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 import { EditProfileComponent } from './components/profile/edit-profile/edit-profile.component';
+import { DeleteProfileComponent } from './components/profile/delete-profile/delete-profile.component';
 
 
 @NgModule({
@@ -30,7 +30,6 @@ import { EditProfileComponent } from './components/profile/edit-profile/edit-pro
     AppComponent,
     NavigationComponent,
     HomeComponent,
-    DashboardComponent,
     RegistrationComponent,
     LoginComponent,
     ProfileComponent,
@@ -38,7 +37,8 @@ import { EditProfileComponent } from './components/profile/edit-profile/edit-pro
     EditComicsComponent,
     DeleteComicComponent,
     PublicProfileComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    DeleteProfileComponent
   ],
   imports: [
     BrowserModule,

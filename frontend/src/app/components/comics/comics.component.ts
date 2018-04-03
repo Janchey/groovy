@@ -43,6 +43,7 @@ export class ComicsComponent implements OnInit {
         Validators.minLength(3),
         this.checkTitleCaracters
       ])],
+      image: [''],
       creator: ['', Validators.required],
       writer: ['', Validators.required],
       artist: ['', Validators.required],
@@ -81,7 +82,7 @@ export class ComicsComponent implements OnInit {
     this.newComic = true;
   }
 
-  // LOCK AND DISABLE RELOAD BUTTON SO THAT USER CANT CLICK ON IT MORE THAN ONCE EVERY 2s
+  // LOCK AND DISABLE RELOAD BUTTON SO THAT USER CAN'T CLICK ON IT MORE THAN ONCE EVERY 2s
   reloadComics() {
     this.loadingComics = true;
     this.getAllComics();
@@ -96,7 +97,7 @@ export class ComicsComponent implements OnInit {
     this.newComment.push(id); // Add the comic that is being commented to the array
   }
 
-  cancelComment(id){
+  cancelComment(id) {
     const getIndex = this.newComment.indexOf(id);
     this.newComment.splice(getIndex, 1);
     this.commentForm.reset();
@@ -110,6 +111,7 @@ export class ComicsComponent implements OnInit {
 
     const comic = {
       title: this.comicForm.get('title').value,
+      image: this.comicForm.get('image').value,
       creator: this.comicForm.get('creator').value,
       writer: this.comicForm.get('writer').value,
       artist: this.comicForm.get('artist').value,
@@ -118,10 +120,11 @@ export class ComicsComponent implements OnInit {
       number: this.comicForm.get('number').value,
       originalNumber: this.comicForm.get('originalNumber').value,
       yearPublished: this.comicForm.get('yearPublished').value,
-      ganre: this.comicForm.get('ganre').value,
-      createdBy: this.username
+      ganre: this.comicForm.get('ganre').value
+
     }
 
+    //create new comic
     this.comicsService.newComic(comic).subscribe(data => {
       if (!data.success) {
         this.showMessage = 'alert alert-danger';
@@ -138,23 +141,43 @@ export class ComicsComponent implements OnInit {
           this.message = 'Comic has been added to the list';
           this.comicForm.reset();
           this.unlockComicForm();
-        },2000);
+        }, 2000);
       }
     });
   }
 
-  submitComment(id){
+  //get image
+  imageChange(event: any) {
+    const files: FileList = event.target.files;
+    if (files.length > 0) {
+      const file: File = files[0];
+      this.createImageFromBlob(file);
+    }
+  }
+
+  createImageFromBlob(image: Blob) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      this.comicForm.get('image').value = reader.result;
+    }, false);
+
+    if (image) {
+      reader.readAsDataURL(image);
+    }
+  }
+
+  submitComment(id) {
     this.lockCommentForm();
     this.lockSubmit = true;
-    const getComment= this.commentForm.get('comment').value;
-    this.comicsService.comicComment(id, getComment).subscribe(data =>{
+    const getComment = this.commentForm.get('comment').value;
+    this.comicsService.comicComment(id, getComment).subscribe(data => {
       this.getAllComics();
       const getIndex = this.newComment.indexOf(id);
       this.newComment.splice(getIndex, 1);
       this.unlockCommentForm();
       this.commentForm.reset();
       this.lockSubmit = false;
-      if (this.showComments.indexOf(id) < 0){
+      if (this.showComments.indexOf(id) < 0) {
         this.expand(id);
       }
     });
@@ -166,6 +189,7 @@ export class ComicsComponent implements OnInit {
 
   lockComicForm() {
     this.comicForm.get('title').disable();
+    this.comicForm.get('image').disable();
     this.comicForm.get('creator').disable();
     this.comicForm.get('writer').disable();
     this.comicForm.get('artist').disable();
@@ -180,6 +204,7 @@ export class ComicsComponent implements OnInit {
 
   unlockComicForm() {
     this.comicForm.get('title').enable();
+    this.comicForm.get('image').enable();
     this.comicForm.get('creator').enable();
     this.comicForm.get('writer').enable();
     this.comicForm.get('artist').enable();
@@ -192,44 +217,45 @@ export class ComicsComponent implements OnInit {
 
   }
 
-  lockCommentForm(){
+  lockCommentForm() {
     this.commentForm.get('comment').disable();
   }
 
-  unlockCommentForm(){
+  unlockCommentForm() {
     this.commentForm.get('comment').enable();
   }
 
-  getAllComics(){
+  getAllComics() {
     this.comicsService.getAllComics().subscribe(data => {
       this.comicList = data.comics;
     });
   }
 
-  likeComic(id){
+  likeComic(id) {
     this.comicsService.likeComic(id).subscribe(data => {
       this.getAllComics();
     });
   }
 
-  dislikeComic(id){
+  dislikeComic(id) {
     this.comicsService.dislikeComic(id).subscribe(data => {
       this.getAllComics();
     });
   }
 
-  expand(id){
+  expand(id) {
     this.showComments.push(id);
   }
 
-  collapse(id){
+  collapse(id) {
     const getIndex = this.showComments.indexOf(id);
     this.showComments.splice(getIndex, 1);
   }
 
   ngOnInit() {
+    // Get profile username on page load
     this.authService.getProfile().subscribe(profile => {
-      this.username = profile.user.username;
+      this.username = profile.user.username; // Used when creating new blog posts and comments
     });
     this.getAllComics();
   }

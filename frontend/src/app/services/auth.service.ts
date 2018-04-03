@@ -73,6 +73,11 @@ export class AuthService {
     return this.http.get(this.domain + '/authentication/userId/' + id, this.options).map(res => res.json());
   }
 
+  deleteProfile(id){
+    this.createAuthHeader(); 
+    return this.http.delete(this.domain + '/authentication/deleteProfile/' + id,  this.options).map(res => res.json());
+  }
+
   editProfile(user){
     this.createAuthHeader(); 
     return this.http.put(this.domain + '/authentication/updateProfile', user,  this.options).map(res => res.json());

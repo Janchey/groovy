@@ -39,9 +39,9 @@ const titleValidation = [
 
 
 let checkComment = (comment) => {
-    if (!comment[0]) {
+    if (!comment) {
         return false;
-    } else if (comment[0].comment.length < 3 || comment[0].comment.length > 150) {
+    } else if (comment.length < 3 || comment.length > 150) {
         return false;
     } else {
         return true;
@@ -64,8 +64,7 @@ const ComicSchema = new Schema({
         validate: titleValidation
     },
     image: {
-        data: Buffer,
-        contentType: String
+        type: String
     },
     creator: {
         type: String,
@@ -112,7 +111,6 @@ const ComicSchema = new Schema({
         type: Array,
         required: true
     },
-    createdBy: { type: String },
     publishedDate: { 
         type: Date, 
         default: Date.now() 
@@ -132,7 +130,7 @@ const ComicSchema = new Schema({
         type: Array
     },
     comments: [{
-        comment: { type: String /*, validate: commentValidation */},
+        comment: { type: String , validate: checkComment },
         commentator: { type: String }
     }]
 });

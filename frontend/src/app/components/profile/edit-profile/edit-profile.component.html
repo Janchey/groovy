@@ -1,5 +1,4 @@
-<div class="container">
-  <h1 class="page-header">Edit Comic Book</h1>
+<div class="container background-green">
   <div class="row">
     <div class="col-12 show-hide-message" *ngIf="message">
       <div [ngClass]="showMessage">
@@ -7,11 +6,12 @@
       </div>
     </div>
   </div>
+  <h1 class="page-header pt-5 mb-4">Edit Comic Book</h1>
 
 
   <!-- Edit User Form -->
 
-  <form (submit)="onEditProfileFormSubmit()" *ngIf="!loading">
+  <form (submit)="onEditProfileFormSubmit()" *ngIf="!loading" class="pb-5">
     <!-- Username Input -->
     <div class="form-group">
       <label for="username">Username</label>
@@ -26,14 +26,16 @@
 
     <!-- Password Input -->
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password">Confirm Password</label>
       <input type="password" name="password" class="form-control" placeholder="*New password" [(ngModel)]="user.password" />
     </div>
 
 
     <!-- Delete profile -->
-    <!--    <a [routerLink]="['/delete-comic/', comic._id]"><button  [disabled]="lockSubmit"  type="button" name="button" class="btn btn-danger">Delete</button></a>
--->
+    <a [routerLink]="['/delete-profile/', user._id]">
+      <button [disabled]="lockSubmit" type="button" name="button" class="btn btn-danger">Delete</button>
+    </a>
+
     <!-- Go Back Button -->
     <button [disabled]="lockSubmit" type="button" name="button" (click)="goBack()" class="btn btn-warning">Go Back</button>
     <!-- Submit Button -->

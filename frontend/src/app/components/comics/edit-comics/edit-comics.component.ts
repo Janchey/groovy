@@ -27,7 +27,7 @@ export class EditComicsComponent implements OnInit {
   onEditComicFormSubmit() {
     this.lockSubmit = true;
     this.comicsService.editComic(this.comic).subscribe(data => {
-      if(!data.success){
+      if (!data.success) {
         this.showMessage = 'alert alert-danger';
         this.message = data.message;
         this.lockSubmit = false;
@@ -41,6 +41,26 @@ export class EditComicsComponent implements OnInit {
     });
   }
 
+  //get image
+  imageChange(event: any) {
+    const files: FileList = event.target.files;
+    if (files.length > 0) {
+      const file: File = files[0];
+      this.createImageFromBlob(file);
+    }
+  }
+
+  createImageFromBlob(image: Blob) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      this.comic.image = reader.result;
+    }, false);
+
+    if (image) {
+      reader.readAsDataURL(image);
+    }
+  }
+  
   goBack() {
     this.location.back();
   }
